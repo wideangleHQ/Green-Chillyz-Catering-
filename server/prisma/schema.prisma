@@ -1,0 +1,275 @@
+// =============================================================================
+// Green Chillyz Catering — Prisma Schema
+// =============================================================================
+// Data model grounded in docs/src/05-content-model.md, 06-enquiry-system.md,
+// 09-technical-architecture.md, and the client's Website Information Form
+// export (2026-09-25) — see docs/src/16-client-information-form-audit.md.
+//
+// IMPLEMENTATION STATUS
+//   ✅ Implemented:  Customer, Enquiry, Service, GalleryItem, Testimonial,
+//                    FAQ, ContactRequest, LeadStatus enum, EventType enum,
+//                    GalleryCategory enum, FaqCategory enum
+//   ⏳ Deferred:     Menu, Package, MenuCourse, MenuTier — the client supplied
+//                    no menu document and requires pricing to be quoted after
+//                    enquiry, never published (docs/src/11-scope-and-conflicts.md)
+//   ❌ Out of scope: Auth, Accounts, Loyalty, QSR restaurant models
+//
+// MIGRATIONS
+//   There is deliberately no prisma/migrations/ directory yet: this project has
+//   never been connected to a database, so there is no baseline to extend.
+//   Create the baseline against a fresh Supabase project with:
+//       pnpm db:migrate:dev      (generates 0_init + records it)
+//   The first generated migration will already include the extended EventType
+//   enum, because schema.prisma is the single source of truth.
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // DATABASE_URL  — pooled connection (pgbouncer) for application queries
+  // DIRECT_URL    — direct connection, used by Prisma Migrate only
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// =============================================================================
+// ENUMS
+// =============================================================================
+
+/// Lead lifecycle states — from docs/src/06-enquiry-system.md
+enum LeadStatus {
+  NEW                    // Form submitted, not yet actioned
+  CONTACTED              // Sales has responded
+  REQUIREMENTS_COLLECTED // Event details confirmed with client
+  QUOTE_PREPARED         // Internal quote drafted
+  QUOTE_SENT             // Quote shared with client
+  FOLLOW_UP              // Awaiting client decision
+  CONFIRMED              // Client has booked
+  EVENT_COMPLETED        // Event delivered
+  LOST                   // No booking resulted
+  CANCELLED              // Booking cancelled after confirmation
+}
+
+/// Catering event types.
+///
+/// One member per service the client confirmed they currently provide, plus
+/// OTHER for the client's open-ended "Any Type Of Catering" answer.
+/// Source: Website Information Form export (2026-09-25),
+/// "Which types of catering services do you currently provide?".
+/// Mirrored in client/src/content/eventTypes.ts.
+///
+/// Changing an existing member is a breaking change for stored enquiries —
+/// only add new members (see prisma/migrations/*_add_event_types).
+enum EventType {
+  WEDDING
+  RECEPTION
+  ENGAGEMENT
+  HALDI_MEHENDI
+  BIRTHDAY
+  ANNIVERSARY
+  CORPORATE
+  OFFICE_BUSINESS
+  PRIVATE_EVENT
+  HOUSE_PARTY
+  OUTDOOR
+  INSTITUTIONAL
+  OTHER
+}
+
+/// Gallery image categories — from docs/src/05-content-model.md
+enum GalleryCategory {
+  WEDDINGS
+  RECEPTIONS
+  HALDI_MEHENDI
+  CORPORATE
+  BIRTHDAYS
+  BUFFET_SETUPS
+  LIVE_STATIONS
+  DESSERTS
+  SERVICE_STAFF
+  KITCHEN_PREP
+  TABLE_PRESENTATION
+}
+
+/// FAQ groupings — from docs/src/04-page-specs.md
+enum FaqCategory {
+  BOOKING
+  MENUS
+  LOGISTICS
+  PRICING
+  GENERAL
+}
+
+// =============================================================================
+// MODELS
+// =============================================================================
+
+/// A person who submitted an enquiry or contact request.
+/// Not a login account — authentication is out of scope for V1.
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  /// Primary follow-up channel — required per docs/06-enquiry-system.md.
+  /// Unique so repeat enquiries from the same person attach to one Customer
+  /// record instead of creating duplicates.
+  phone     String   @unique
+  email     String?
+
+  enquiries      Enquiry[]
+  contactRequests ContactRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("customers")
+}
+
+/// A quote request submitted via the Get-a-Quote form.
+/// Drives the lead lifecycle — see docs/src/06-enquiry-system.md.
+model Enquiry {
+  id         String     @id @default(cuid())
+  customer   Customer   @relation(fields: [customerId], references: [id])
+  customerId String
+
+  eventType  EventType
+  eventDate  DateTime?
+  guestCount Int?
+  location   String?
+  message    String?
+
+  status     LeadStatus @default(NEW)
+
+  /// Shown to the customer on successful submission (e.g. GCC-20260001).
+  referenceId String @unique
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@index([status])
+  @@index([customerId])
+  @@index([eventType])
+  @@map("enquiries")
+}
+
+/// A catering service category (Wedding, Corporate, etc.).
+/// Content-managed — editors can activate/deactivate and reorder.
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  /// URL-safe slug used for routing (e.g. "wedding-catering")
+  slug        String   @unique
+  description String?
+  /// SEO keyword theme — from docs/src/05-content-model.md
+  seoKeyword  String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+  @@map("services")
+}
+
+/// A published photo in the event gallery.
+/// Images are served from external storage (e.g. Supabase Storage or CDN).
+/// IMPORTANT: only published (isPublished=true) items are shown to visitors.
+model GalleryItem {
+  id          String          @id @default(cuid())
+  category    GalleryCategory
+  /// Descriptive alt text — required, must not be generic (e.g. "image1.jpg")
+  altText     String
+  caption     String?
+  /// Absolute URL to the image asset (storage bucket or CDN)
+  imageUrl    String
+  isPublished Boolean         @default(false)
+  sortOrder   Int             @default(0)
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([category, isPublished])
+  @@map("gallery_items")
+}
+
+/// A client testimonial.
+/// All testimonials require manual moderation before publish.
+/// NEVER sourced from QSR/restaurant ratings — see docs/src/05-content-model.md.
+model Testimonial {
+  id           String     @id @default(cuid())
+  customerName String
+  eventType    EventType?
+  location     String?
+  guestCount   Int?
+  quote        String
+  photoUrl     String?
+  eventDate    DateTime?
+  /// Manual approval required before the testimonial becomes visible
+  isApproved   Boolean    @default(false)
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([isApproved])
+  @@map("testimonials")
+}
+
+/// A published FAQ entry.
+/// Grouped by category and surfaced as accordions — see docs/src/04-page-specs.md.
+model Faq {
+  id        String      @id @default(cuid())
+  question  String
+  answer    String
+  category  FaqCategory @default(GENERAL)
+  sortOrder Int         @default(0)
+  isActive  Boolean     @default(true)
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([category, isActive])
+  @@map("faqs")
+}
+
+/// A simpler contact form submission (distinct from a full Enquiry).
+/// Used for general contact messages, not quote requests.
+model ContactRequest {
+  id         String    @id @default(cuid())
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+  /// Captured name, in case customer record does not exist yet
+  name       String
+  phone      String?
+  email      String?
+  message    String
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("contact_requests")
+}
+
+// =============================================================================
+// DEFERRED MODELS
+// =============================================================================
+//
+// Menu / Package / MenuTier
+// ─────────────────────────
+// The pricing and package structure is unconfirmed — see:
+//   docs/src/11-scope-and-conflicts.md → "Pricing" conflict row
+//   docs/src/05-content-model.md → "Menus & packages" pricing options table
+//
+// These models will be added in a future schema migration once the client
+// confirms the pricing approach (exact / "starting from" / enquiry-only /
+// downloadable PDF).
+//
+// Conceptual structure (do not implement yet):
+//   Menu → cuisine, tier, isActive
+//   MenuTier → name (Basic/Standard/Premium), pricePerPlate (if published)
+//   MenuCourse → type (starter/main/rice/dessert/liveStation/addon), items
+//
+// =============================================================================
