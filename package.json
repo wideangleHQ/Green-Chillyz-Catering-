@@ -1,0 +1,42 @@
+{
+  "name": "green-chillyz-catering",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Green Chillyz Catering — premium catering platform (monorepo root)",
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "dev:client": "pnpm --filter client dev",
+    "dev:server": "pnpm --filter server dev",
+    "build": "pnpm -r build",
+    "build:client": "pnpm --filter client build",
+    "build:server": "pnpm --filter server build",
+    "lint": "pnpm -r lint",
+    "lint:client": "pnpm --filter client lint",
+    "lint:server": "pnpm --filter server lint",
+    "typecheck": "pnpm -r typecheck",
+    "typecheck:client": "pnpm --filter client typecheck",
+    "typecheck:server": "pnpm --filter server typecheck",
+    "db:generate": "pnpm --filter server db:generate",
+    "db:migrate:dev": "pnpm --filter server db:migrate:dev",
+    "db:migrate:deploy": "pnpm --filter server db:migrate:deploy",
+    "db:studio": "pnpm --filter server db:studio",
+    "db:validate": "pnpm --filter server db:validate",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\" --ignore-path .gitignore",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\" --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@12.3.4",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "unrs-resolver",
+      "@prisma/engines",
+      "prisma"
+    ]
+  }
+}

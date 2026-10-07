@@ -1,0 +1,177 @@
+@import 'tailwindcss';
+
+/* ─── Design Tokens (Tailwind v4 theme) ─────────────────────────────── */
+
+@theme {
+  /* Official Brand Palette */
+  --color-brand-yellow: #F2C900;
+  --color-brand-yellow-dark: #D4AF00;
+  --color-chilli-red: #E52329;
+  --color-chilli-red-dark: #C6181D;
+  --color-chef-black: #17191A;
+  --color-warm-ivory: #FFFDF5;
+  --color-pure-white: #FFFFFF;
+  --color-muted-charcoal: #55534A;
+  --color-soft-border: #E7E2D5;
+  --color-pale-yellow: #FFF4B8;
+
+  /* Aliases & Semantic Tokens */
+  --color-brand-red: #E52329;
+  --color-brand-red-dark: #C6181D;
+
+  /* Neutrals */
+  --color-sand-50: #FFFDF5;
+  --color-sand-100: #FFF4B8;
+  --color-sand-200: #E7E2D5;
+  --color-sand-300: #D4D4C8;
+  --color-sand-400: #A8A89C;
+  --color-sand-500: #55534A;
+  --color-sand-600: #424039;
+  --color-sand-700: #33312B;
+  --color-sand-800: #242420;
+  --color-sand-900: #17191A;
+
+  /* Fonts */
+  --font-sans: var(--font-manrope), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-anton), Impact, sans-serif;
+
+  /* Border radius system */
+  --radius-card: 1rem;
+  --radius-card-lg: 1.25rem;
+  --radius-button: 0.625rem;
+  --radius-badge: 0.375rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(23, 25, 26, 0.05), 0 1px 2px rgba(23, 25, 26, 0.03);
+  --shadow-card-hover: 0 10px 25px rgba(23, 25, 26, 0.08), 0 4px 10px rgba(23, 25, 26, 0.04);
+  --shadow-elevated: 0 20px 40px rgba(23, 25, 26, 0.12), 0 8px 16px rgba(23, 25, 26, 0.06);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 350ms;
+  --duration-slow: 600ms;
+
+  /* Container widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1200px;
+  --container-2xl: 1400px;
+}
+
+/* ─── Base styles ────────────────────────────────────────────────────── */
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  color: var(--color-chef-black);
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Typography scale ───────────────────────────────────────────────── */
+
+.font-display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* ─── Focus states ───────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-yellow);
+  outline-offset: 2px;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────── */
+
+::selection {
+  background-color: var(--color-pale-yellow);
+  color: var(--color-chef-black);
+}
+
+/* ─── Container utility ──────────────────────────────────────────────── */
+
+.page-container {
+  width: 100%;
+  max-width: var(--container-2xl);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 2.5vw, 40px);
+}
+
+/* ─── Section spacing ────────────────────────────────────────────────── */
+
+.section-spacing {
+  padding-block: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-block: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-spacing {
+    padding-block: 7.5rem;
+  }
+}
+
+/* ─── Major section utility ────────────────────────────────────────────── */
+
+.major-section {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ─── Scroll reveal animation ────────────────────────────────────────── */
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: reveal-up var(--duration-slow) var(--ease-out-expo) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    animation: none;
+  }
+}
