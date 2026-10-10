@@ -66,6 +66,11 @@
 html {
   height: 100%;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Anton ships a single 400 weight; without this the browser fakes bold
+     (smeared, blurry glyphs) whenever a bolder weight class lands on it. */
+  font-synthesis: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -88,6 +93,7 @@ body {
   background-color: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
@@ -95,8 +101,29 @@ body {
 
 .font-display {
   font-family: var(--font-display);
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+}
+
+/* Low-specificity defaults: Tailwind utilities (utilities layer) still win. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+    line-height: 1.15;
+  }
+
+  p, li, dd, figcaption {
+    text-wrap: pretty;
+  }
+}
+
+/* iOS Safari zooms the page on focus when a field is under 16px, which also
+   shifts the layout. Unlayered so it beats the text-sm utility on small screens. */
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
 }
 
 /* ─── Focus states ───────────────────────────────────────────────────── */
@@ -175,3 +202,15 @@ body {
     animation: none;
   }
 }
+
+/* ─── Scrollbar utilities ────────────────────────────────────────────── */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

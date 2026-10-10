@@ -33,79 +33,79 @@ export const SERVICES: Service[] = [
     slug: 'wedding',
     title: 'Wedding Catering',
     description:
-      'Buffet and table setup, serving staff, crockery, live counters and on-site coordination — managed from setup through to cleanup.',
+      'Make your wedding celebration memorable with catering planned around your guests, food preferences, and event requirements. Choose from a range of cuisines and discuss a customised menu with the Green Chillyz team.',
   },
   {
     slug: 'reception',
     title: 'Reception Catering',
     description:
-      'Event setup, food serving staff, plate and cutlery service, dessert and beverage counters for your reception.',
+      'Plan reception catering around your guest count, preferred cuisines, and serving requirements. From menu customisation to buffet setup and on-site service arrangements, discuss the details of your event with our team.',
   },
   {
     slug: 'engagement',
     title: 'Engagement Catering',
     description:
-      'Full catering support for your engagement — setup, service, live counters and cleanup handled by our team.',
+      'Celebrate your engagement with a menu tailored to your occasion and guests. Share your preferred cuisines, guest count, location, and event requirements so the team can prepare a suitable quotation.',
   },
   {
     slug: 'haldi-mehendi',
-    title: 'Haldi & Mehendi Catering',
+    title: 'Haldi / Mehendi Catering',
     description:
-      'Outdoor catering with buffet setup, food presentation, serving staff and complete event coordination.',
+      'Plan catering for your Haldi or Mehendi celebration with food choices suited to your gathering. Discuss your preferred menu, guest count, setup, and serving requirements with Green Chillyz Catering.',
   },
   {
     slug: 'birthday',
     title: 'Birthday Party Catering',
     description:
-      'Private party catering with table setup, serving staff, live cooking stations and dessert counters.',
+      'Make birthday celebrations easier to plan with catering arranged around your guests and preferences. Share your event details and explore suitable menu customisation and catering arrangements.',
   },
   {
     slug: 'anniversary',
     title: 'Anniversary Catering',
     description:
-      'Memorable catering services for anniversaries — setup, service and cleanup looked after end to end.',
+      'Celebrate your anniversary with catering planned around the occasion, your guests, and your preferred food choices. Discuss your requirements with the team to receive a customised quotation.',
   },
   {
     slug: 'corporate',
     title: 'Corporate Catering',
     description:
-      'Professional catering for conferences, meetings and corporate gatherings, including event setup and on-site coordination.',
+      'Arrange catering for corporate events with menus and service requirements discussed around your event. Share the expected guest count, location, menu preferences, and setup needs to plan the catering arrangements.',
   },
   {
     slug: 'office-business',
-    title: 'Office & Business Events',
+    title: 'Office / Business Events',
     description:
-      'Office catering and business event service with buffet setup, serving staff and beverage counters.',
+      'Plan catering for office gatherings, business functions, and professional events. Green Chillyz can discuss menu preferences, guest numbers, buffet arrangements, serving staff, and other relevant catering requirements.',
   },
   {
     slug: 'private-party',
     title: 'Private Party Catering',
     description:
-      'House party and private event catering with full setup, food presentation and cleanup.',
-  },
-  {
-    slug: 'house-party',
-    title: 'House Party Catering',
-    description:
-      'In-home catering including table setup, crockery, live counters and serving staff.',
+      'Make private celebrations easier to organise with catering tailored to your gathering. Discuss your menu preferences, guest count, location, and the level of on-site catering support you require.',
   },
   {
     slug: 'outdoor',
     title: 'Outdoor Catering',
     description:
-      'Outdoor event catering with event setup, buffet infrastructure, live stations and event coordination.',
+      'Plan catering for outdoor events by discussing the venue, guest count, menu, and service arrangements with the team. Additional travel requirements, permissions, and permits may apply outside the primary service area.',
+  },
+  {
+    slug: 'house-party',
+    title: 'House Party Catering',
+    description:
+      'Arrange catering for your house party around your guest count, food preferences, and available event space. Discuss menu options, food service, and any setup requirements before requesting your quotation.',
   },
   {
     slug: 'institutional',
     title: 'Institutional Catering',
     description:
-      'Institutional catering with buffet setup, food serving staff, crockery and cleanup support.',
+      'Discuss catering requirements for institutional events and gatherings with the Green Chillyz team. Share the expected number of guests, location, menu preferences, and service requirements for an individually prepared quotation.',
   },
   {
     slug: 'any-type',
     title: 'Any Type of Catering',
     description:
-      'The client confirmed catering for any type of event. Describe your occasion on the enquiry form and we will confirm feasibility.',
+      'Have a different event in mind? Green Chillyz offers catering for a wide range of occasions. Share your event details, preferred cuisines, guest count, and service requirements so the team can understand your needs.',
     isCatchAll: true,
   },
 ];
