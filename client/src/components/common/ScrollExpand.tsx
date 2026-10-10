@@ -128,19 +128,19 @@ export default function ScrollExpand({
     if (titleRef.current) {
       const out = smoothstep(0.35, 0.8, p);
       titleRef.current.style.opacity = `${1 - out}`;
-      titleRef.current.style.transform = `translate3d(0, ${-28 * out}px, 0) scale(${1 + 0.06 * out})`;
+      titleRef.current.style.transform = `translate3d(0, ${Math.round(-28 * out)}px, 0)`;
     }
 
     if (hintRef.current) {
       const gone = smoothstep(0, 0.15, p);
       hintRef.current.style.opacity = `${1 - gone}`;
-      hintRef.current.style.transform = `translate3d(0, ${10 * gone}px, 0)`;
+      hintRef.current.style.transform = `translate3d(0, ${Math.round(10 * gone)}px, 0)`;
     }
 
     if (overlayRef.current) {
       const inn = smoothstep(0.65, 0.96, p);
       overlayRef.current.style.opacity = `${inn}`;
-      overlayRef.current.style.transform = `translate3d(0, ${18 * (1 - inn)}px, 0)`;
+      overlayRef.current.style.transform = `translate3d(0, ${Math.round(18 * (1 - inn))}px, 0)`;
       overlayRef.current.style.pointerEvents = inn > 0.7 ? 'auto' : 'none';
     }
   }, []);

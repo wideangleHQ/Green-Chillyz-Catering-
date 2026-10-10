@@ -8,28 +8,24 @@ import heroBg from '@/assets/Hero Section Bg.png';
 const accordionItems: AccordionGalleryItem[] = [
   {
     image: secondSectionBg,
-    badge: 'Capacity',
     label: 'Any Scale',
     description:
       'We generally cater from 50 guests upwards. Every event is quoted individually, per person, after we understand what you need.',
   },
   {
     image: heroBg,
-    badge: 'Cuisines',
     label: 'Customised Menus',
     description:
       'Odia, North Indian, South Indian, Bengali, Chinese, Continental, Mughlai, Italian — and if it is not on this list, ask. “Any Type as You Love to Eat”. Both predefined packages and fully customised menus.',
   },
   {
     image: secondSectionBg,
-    badge: 'Full Service',
     label: 'Setup Through To Cleanup',
     description:
       'Buffet and table setup, serving staff, plates, cutlery, crockery, live counters, dessert and beverage counters, event coordination and cleanup.',
   },
   {
     image: heroBg,
-    badge: 'Coverage',
     label: 'Across Bhubaneswar & Odisha',
     description:
       'Entire Bhubaneswar and Entire Odisha. Outside our primary area, travel requirement, permission and permit apply.',
@@ -51,24 +47,24 @@ export default function CateringExpandSection() {
         endRadius={0}
         mediaZoom={1.35}
         scrollDistance={1.3}
-        holdDistance={0.7}
+        holdDistance={0.15}
         smoothing={0.1}
         overlayScrim={0.88}
         enabled={true}
       >
-        <div className="w-full max-w-6xl mx-auto flex flex-col justify-center items-center text-center px-4 py-6 md:py-8 pointer-events-auto">
+        <div className="page-container max-w-6xl flex flex-col justify-center items-center text-center py-6 md:py-8 pointer-events-auto">
           {/* Section Eyebrow */}
-          <span className="inline-block text-xs md:text-sm font-black tracking-[0.25em] uppercase text-brand-yellow mb-2 drop-shadow-sm">
+          <span className="inline-block text-xs md:text-sm font-black tracking-[0.25em] uppercase text-brand-yellow mb-2">
             WHY CHOOSE US
           </span>
 
           {/* Main Section Heading */}
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-2 md:mb-3 drop-shadow-lg">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-2 md:mb-3">
             CATERING HANDLED END TO END
           </h2>
 
           {/* Supporting Statement */}
-          <p className="text-sm md:text-base text-sand-200 leading-relaxed max-w-2xl mx-auto font-medium drop-shadow-sm mb-6 md:mb-8">
+          <p className="text-sm md:text-base text-sand-200 leading-relaxed max-w-2xl mx-auto font-medium mb-6 md:mb-8">
             We Deal and Serve to Your Guest as Like Our Guest till to The End of The Event.
           </p>
 

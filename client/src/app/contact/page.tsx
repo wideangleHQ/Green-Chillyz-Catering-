@@ -135,7 +135,7 @@ export default function ContactPage() {
                 },
               ].map((item) => (
                 <div key={item.step} className="text-center p-4 bg-white border border-soft-border rounded-(--radius-card)">
-                  <span className="inline-block text-2xl font-display font-black text-chilli-red mb-2">
+                  <span className="inline-block text-2xl font-display text-chilli-red mb-2">
                     {item.step}
                   </span>
                   <h4 className="text-sm font-bold text-chef-black mb-1">{item.title}</h4>

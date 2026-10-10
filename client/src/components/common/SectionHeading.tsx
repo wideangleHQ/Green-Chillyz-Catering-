@@ -4,6 +4,7 @@ interface SectionHeadingProps {
   description?: string;
   align?: 'left' | 'center';
   dark?: boolean;
+  className?: string;
 }
 
 export default function SectionHeading({
@@ -12,10 +13,13 @@ export default function SectionHeading({
   description,
   align = 'center',
   dark = false,
+  className = '',
 }: SectionHeadingProps) {
   return (
     <div
-      className={`max-w-2xl mb-10 md:mb-14 ${
+      className={`max-w-2xl ${
+        className ? className : 'mb-10 md:mb-14'
+      } ${
         align === 'center' ? 'mx-auto text-center' : 'text-left'
       }`}
     >

@@ -35,7 +35,6 @@
   inset: 0;
   clip-path: inset(16% 14% 16% 14% round 20px);
   will-change: clip-path;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
 }
 
 .scroll-expand__media {
@@ -81,13 +80,12 @@
   text-align: center;
   font-size: var(--se-title-size);
   font-family: var(--font-display, Impact, sans-serif);
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1;
   color: #f2c900;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
   pointer-events: none;
-  will-change: opacity, transform;
 }
 
 .scroll-expand__hint {
@@ -100,6 +98,5 @@
   letter-spacing: 0.05em;
   color: rgba(255, 255, 255, 0.7);
   pointer-events: none;
-  will-change: opacity, transform;
   z-index: 20;
 }
