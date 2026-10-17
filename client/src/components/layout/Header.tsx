@@ -76,6 +76,7 @@ export default function Header() {
   const isTransparent = isHome && !scrolled;
 
   return (
+    <>
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
         visible || mobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
@@ -188,10 +189,13 @@ export default function Header() {
           </div>
         </nav>
       </div>
+    </header>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — sibling of <header>, not a child: the header's transform and
+          backdrop-filter would otherwise become the containing block for this fixed
+          element and shrink it to the 80px header bar. */}
       {mobileOpen && (
-        <div className="fixed inset-0 top-0 z-40 bg-white lg:hidden">
+        <div className="fixed inset-0 z-40 bg-white lg:hidden">
           <div className="pt-24 px-6 pb-8 h-full overflow-y-auto flex flex-col">
             <ul className="flex flex-col gap-1.5">
               {PRIMARY_NAV.map((item) => {
@@ -276,6 +280,6 @@ export default function Header() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
