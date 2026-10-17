@@ -1,4 +1,5 @@
-import { SITE, SITE_ADDRESS_LINE } from '@/config/site';
+ import { SITE, SITE_ADDRESS_LINE } from '@/config/site';
+import { SITE_URL } from '@/config/siteUrl';
 import { CUISINES } from '@/content/cuisines';
 import { SERVICES } from '@/content/services';
 
@@ -16,9 +17,7 @@ import { SERVICES } from '@/content/services';
  * Reintroduce a field only when the client supplies it in writing.
  */
 export default function StructuredData() {
-  const siteUrl = (
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
-  ).replace(/\/$/, '');
+  const siteUrl = SITE_URL;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -41,6 +40,11 @@ export default function StructuredData() {
       addressCountry: SITE.contact.address.countryCode,
     },
     hasMap: SITE.contact.mapsUrl,
+    sameAs: [
+      SITE.social.facebook,
+      SITE.social.instagram,
+      SITE.social.youtube,
+    ],
     areaServed: {
       '@type': 'AdministrativeArea',
       name: SITE.serviceArea,

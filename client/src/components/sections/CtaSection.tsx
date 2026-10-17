@@ -5,13 +5,13 @@ import RevealOnScroll from '@/components/common/RevealOnScroll';
 
 export default function CtaSection() {
   return (
-    <section className="section-spacing major-section bg-brand-yellow text-chef-black">
+    <section className="section-spacing bg-brand-yellow text-chef-black">
       <div className="page-container text-center">
         <RevealOnScroll>
           <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-chef-black/80 mb-4">
             Ready to Plan Your Event?
           </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-chef-black leading-tight mb-4">
+          <h2 className="font-display text-chef-black leading-tight mb-4" style={{ fontSize: 'clamp(1.875rem, 4vw + 0.5rem, 3rem)' }}>
             LET&apos;S CREATE SOMETHING{' '}
             UNFORGETTABLE TOGETHER
           </h2>

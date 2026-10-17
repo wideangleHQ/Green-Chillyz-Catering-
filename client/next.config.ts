@@ -1,9 +1,10 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Turbopack root for monorepo — points to workspace root containing pnpm-lock.yaml
+  // client/ is its own pnpm workspace (own pnpm-lock.yaml), so it is the Turbopack root.
+  // The previous '/../..' pointed above the repository.
   turbopack: {
-    root: __dirname + '/../..',
+    root: __dirname,
   },
 
   // Security headers (supplementing Helmet on the API side)
@@ -15,6 +16,7 @@ const nextConfig: NextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],
       },
     ];

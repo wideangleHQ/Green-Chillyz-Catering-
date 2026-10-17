@@ -60,7 +60,7 @@ const highlights = [
 
 export default function WhySection() {
   return (
-    <section className="section-spacing major-section bg-warm-ivory">
+    <section className="section-spacing bg-warm-ivory">
       <div className="page-container">
         <SectionHeading
           eyebrow="Why Choose Us"

@@ -8,6 +8,7 @@
 //                        section advertises the absence of proof, and a
 //                        skeleton card with filled stars is a fabricated
 //                        rating. See docs/src/12-decisions.md.
+//   /gallery           — removed per client instruction.
 //   /services/[slug]   — removed 2026-09-30. The client supplied service names
 //                        but no per-service detail, so the detail pages would
 //                        have been thin/duplicated content. /services now
@@ -20,7 +21,6 @@ export const ROUTES = {
     index: '/services',
   },
   menus: '/menus',
-  gallery: '/gallery',
   faq: '/faq',
   contact: '/contact',
 } as const;
@@ -36,7 +36,6 @@ export const PRIMARY_NAV: NavItem[] = [
   { label: 'About', href: ROUTES.about },
   { label: 'Services', href: ROUTES.services.index },
   { label: 'Menus', href: ROUTES.menus },
-  { label: 'Gallery', href: ROUTES.gallery },
   { label: 'FAQ', href: ROUTES.faq },
   { label: 'Contact', href: ROUTES.contact },
 ];

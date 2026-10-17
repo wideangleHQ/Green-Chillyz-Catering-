@@ -33,9 +33,10 @@ export default function SectionHeading({
         </span>
       )}
       <h2
-        className={`font-display text-3xl md:text-4xl lg:text-[2.75rem] leading-tight ${
+        className={`font-display leading-tight ${
           dark ? 'text-white' : 'text-chef-black'
         }`}
+        style={{ fontSize: 'clamp(1.875rem, 3.5vw + 0.5rem, 2.75rem)' }}
       >
         {title}
       </h2>
