@@ -5,8 +5,14 @@ import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { ROUTES } from '@/config/routes';
 
-import heroBg from '@/assets/Hero Section Bg.png';
-import secondSectionBg from '@/assets/Second Section.png';
+import chineseImg from '@/assets/Food categories/Indo-Chinese Feast on a Rustic Table.png';
+import bengaliImg from '@/assets/Food categories/Rustic Bengali Thali Feast.png';
+import northIndianImg from '@/assets/Food categories/Rustic Indian Thali Feast.png';
+import italianImg from '@/assets/Food categories/Rustic Italian Feast on a Wooden Table.png';
+import southIndianImg from '@/assets/Food categories/Rustic South Indian Banana Leaf Feast.png';
+import odiaImg from '@/assets/Food categories/Rustic South Indian Thali Feast.png';
+import mughlaiImg from '@/assets/Food categories/Sumptuous Mughlai Feast on Copperware.png';
+import continentalImg from '@/assets/Why Choose Us/Customized Menu.png';
 
 export interface CuisineItem {
   id: string;
@@ -17,11 +23,12 @@ export interface CuisineItem {
   imageAlt: string;
   /** Responsive column layout span classes for editorial asymmetric composition */
   layoutClass: string;
+  heightClass: string;
 }
 
 /**
  * 8 Confirmed Green Chillyz Cuisines with authorized descriptions.
- * Uses genuine Green Chillyz catering photography assets.
+ * Uses authentic Green Chillyz catering photography assets.
  */
 const CUISINE_ITEMS: CuisineItem[] = [
   {
@@ -29,72 +36,80 @@ const CUISINE_ITEMS: CuisineItem[] = [
     slug: 'odia',
     name: 'Odia',
     description: 'Explore Odia cuisine for your celebration.',
-    image: secondSectionBg,
+    image: odiaImg,
     imageAlt: 'Green Chillyz authentic Odia celebration banquet and dining spread',
-    layoutClass: 'col-span-12 md:col-span-7 h-[280px] sm:h-[320px] lg:h-[350px]',
+    layoutClass: 'col-span-6 md:col-span-7',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(240px,38vw,350px)]',
   },
   {
     id: 'north-indian',
     slug: 'north-indian',
     name: 'North Indian',
     description: 'Discover North Indian cuisine for your event.',
-    image: heroBg,
+    image: northIndianImg,
     imageAlt: 'Green Chillyz rich North Indian catering buffet and banquet spread',
-    layoutClass: 'col-span-12 md:col-span-5 h-[280px] sm:h-[320px] lg:h-[350px]',
+    layoutClass: 'col-span-6 md:col-span-5',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(240px,38vw,350px)]',
   },
   {
     id: 'south-indian',
     slug: 'south-indian',
     name: 'South Indian',
     description: 'Explore South Indian food options for your guests.',
-    image: secondSectionBg,
+    image: southIndianImg,
     imageAlt: 'Green Chillyz live South Indian food counter and culinary presentation',
-    layoutClass: 'col-span-6 md:col-span-4 h-[210px] sm:h-[250px] lg:h-[270px]',
+    layoutClass: 'col-span-6 md:col-span-4',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(160px,28vw,270px)]',
   },
   {
     id: 'bengali',
     slug: 'bengali',
     name: 'Bengali',
     description: 'Consider Bengali cuisine for your catering menu.',
-    image: heroBg,
+    image: bengaliImg,
     imageAlt: 'Green Chillyz traditional Bengali feast and celebration catering',
-    layoutClass: 'col-span-6 md:col-span-4 h-[210px] sm:h-[250px] lg:h-[270px]',
+    layoutClass: 'col-span-6 md:col-span-4',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(160px,28vw,270px)]',
   },
   {
     id: 'chinese',
     slug: 'chinese',
     name: 'Chinese',
     description: 'Explore Chinese cuisine as part of your menu.',
-    image: secondSectionBg,
+    image: chineseImg,
     imageAlt: 'Green Chillyz live Chinese food station and wok culinary counter',
-    layoutClass: 'col-span-6 md:col-span-4 h-[210px] sm:h-[250px] lg:h-[270px]',
+    layoutClass: 'col-span-6 md:col-span-4',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(160px,28vw,270px)]',
   },
   {
     id: 'continental',
     slug: 'continental',
     name: 'Continental',
     description: 'Discover Continental food options for your occasion.',
-    image: heroBg,
+    image: continentalImg,
     imageAlt: 'Green Chillyz gourmet Continental banquet dining and presentation',
-    layoutClass: 'col-span-6 md:col-span-4 h-[210px] sm:h-[250px] lg:h-[270px]',
+    layoutClass: 'col-span-6 md:col-span-4',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(160px,28vw,270px)]',
   },
   {
     id: 'mughlai',
     slug: 'mughlai',
     name: 'Mughlai',
     description: 'Explore Mughlai cuisine for your event.',
-    image: secondSectionBg,
+    image: mughlaiImg,
     imageAlt: 'Green Chillyz royal Mughlai banquet spread and aromatic dishes',
-    layoutClass: 'col-span-6 md:col-span-4 h-[210px] sm:h-[250px] lg:h-[270px]',
+    layoutClass: 'col-span-6 md:col-span-4',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(160px,28vw,270px)]',
   },
   {
     id: 'italian',
     slug: 'italian',
     name: 'Italian',
     description: 'Consider Italian cuisine for your catering menu.',
-    image: heroBg,
+    image: italianImg,
     imageAlt: 'Green Chillyz contemporary Italian catering stations and dining setup',
-    layoutClass: 'col-span-6 md:col-span-4 h-[210px] sm:h-[250px] lg:h-[270px]',
+    layoutClass: 'col-span-6 md:col-span-4',
+    heightClass: 'h-[clamp(165px,44vw,210px)] md:h-[clamp(160px,28vw,270px)]',
   },
 ];
 
@@ -118,7 +133,8 @@ export default function MenuPreviewSection() {
           </span>
           <h2
             id="cuisines-heading"
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] text-chef-black uppercase tracking-tight leading-[1.02]"
+            className="font-display text-chef-black uppercase tracking-tight leading-[1.02]"
+            style={{ fontSize: 'clamp(1.875rem, 4vw + 0.5rem, 3.5rem)' }}
           >
             A WORLD OF FLAVOURS, MADE FOR YOUR OCCASION.
           </h2>
@@ -129,9 +145,9 @@ export default function MenuPreviewSection() {
 
         {/* =========================================================================
             2. ASYMMETRIC IMAGE-CARD SHOWCASE (8 CONFIRMED CUISINES)
-            Refined editorial mosaic with larger lead cards and supporting cards
+            4 rows × 2 columns on mobile, editorial mosaic on desktop
            ========================================================================= */}
-        <div className="grid grid-cols-12 gap-3.5 sm:gap-4 lg:gap-5">
+        <div className="grid grid-cols-12 gap-2.5 sm:gap-4 lg:gap-5">
           {CUISINE_ITEMS.map((cuisine) => {
             const isFeatured = featuredCuisine.slug === cuisine.slug;
 
@@ -151,7 +167,7 @@ export default function MenuPreviewSection() {
                 }}
                 className={`group relative overflow-hidden rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow ${
                   cuisine.layoutClass
-                } ${
+                } ${cuisine.heightClass} ${
                   isFeatured
                     ? 'border-brand-yellow ring-1 ring-brand-yellow/80'
                     : 'border border-soft-border/70 hover:border-brand-yellow/80'
@@ -162,25 +178,25 @@ export default function MenuPreviewSection() {
                   src={cuisine.image}
                   alt={cuisine.imageAlt}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.04]"
                   loading="lazy"
                 />
 
                 {/* Subtle Contrast Gradient */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-chef-black/90 via-chef-black/35 to-transparent transition-opacity duration-300 pointer-events-none group-hover:from-chef-black/95 group-hover:via-chef-black/45"
+                  className="absolute inset-0 bg-gradient-to-t from-chef-black/95 via-chef-black/55 to-transparent md:from-chef-black/90 md:via-chef-black/35 md:to-transparent transition-opacity duration-300 pointer-events-none group-hover:from-chef-black/95 group-hover:via-chef-black/45"
                   aria-hidden="true"
                 />
 
                 {/* Top Corner: Clean Directional Arrow Icon */}
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 pointer-events-none">
+                <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 md:top-4 md:right-4 z-10 pointer-events-none">
                   <span
-                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-chef-black/40 backdrop-blur-xs flex items-center justify-center text-white transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:bg-brand-yellow group-hover:text-chef-black"
+                    className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-chef-black/50 backdrop-blur-xs flex items-center justify-center text-white transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:bg-brand-yellow group-hover:text-chef-black"
                     aria-hidden="true"
                   >
                     <svg
-                      className="w-3.5 h-3.5"
+                      className="w-3 h-3 sm:w-3.5 sm:h-3.5"
                       viewBox="0 0 16 16"
                       fill="none"
                       stroke="currentColor"
@@ -194,13 +210,13 @@ export default function MenuPreviewSection() {
                 </div>
 
                 {/* Bottom Card Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-3.5 sm:p-5 z-10">
-                  <h3 className="font-display text-lg sm:text-xl lg:text-2xl text-white tracking-wide uppercase leading-tight group-hover:text-brand-yellow transition-colors duration-200">
+                <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-3.5 md:p-5 z-10">
+                  <h3 className="font-display text-sm sm:text-base md:text-xl lg:text-2xl text-white tracking-wide uppercase leading-tight group-hover:text-brand-yellow transition-colors duration-200">
                     {cuisine.name}
                   </h3>
 
-                  {/* Short Description — revealed with smooth fade & slight upward motion */}
-                  <p className="text-xs sm:text-[13px] text-sand-200 mt-1 opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out font-normal line-clamp-2">
+                  {/* Short Description — visible on mobile, reveals on hover on desktop */}
+                  <p className="text-[11px] sm:text-xs md:text-[13px] text-sand-200 mt-0.5 sm:mt-1 opacity-100 translate-y-0 md:opacity-0 md:translate-y-1.5 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 ease-out font-normal line-clamp-2 leading-snug">
                     {cuisine.description}
                   </p>
                 </div>

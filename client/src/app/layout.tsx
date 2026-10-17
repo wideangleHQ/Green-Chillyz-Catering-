@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import WhatsAppFab from '@/components/common/WhatsAppFab';
 import StructuredData from '@/components/common/StructuredData';
 import { SITE } from '@/config/site';
+import { SITE_URL } from '@/config/siteUrl';
 import './globals.css';
 
 const manrope = localFont({
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     `${SITE.descriptor} across ${SITE.serviceArea}. ` +
     'Weddings, receptions, corporate, office, private, outdoor, house party and institutional catering, ' +
     'with customised menus, live food counters and full on-site setup and service.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
+  metadataBase: new URL(SITE_URL),
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',

@@ -2,9 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
-import heroBg from '@/assets/Hero Section Bg.png';
-import secondSectionBg from '@/assets/Second Section.png';
+import anyScaleImg from '@/assets/Why Choose Us/Any Scale.png';
+import customizedMenuImg from '@/assets/Why Choose Us/Customized Menu.png';
+import cleanSetupImg from '@/assets/Why Choose Us/Clean Setup.png';
+import acrossBhubaneswarImg from '@/assets/Why Choose Us/Across Bhubaneswar.png';
 
 export interface FacilityCardItem {
   id: string;
@@ -25,7 +28,7 @@ const FACILITY_CARDS: FacilityCardItem[] = [
     title: 'Setup & Tableware',
     paragraph:
       'Buffet arrangements, table setup, plates, cutlery, and glassware organised to match your venue layout and guest count.',
-    image: heroBg,
+    image: anyScaleImg,
     alt: 'Green Chillyz banquet table setup and dining arrangement in Bhubaneswar',
   },
   {
@@ -33,7 +36,7 @@ const FACILITY_CARDS: FacilityCardItem[] = [
     title: 'Food & Beverage Service',
     paragraph:
       'Live food counters, live cooking stations, and dedicated beverage or dessert counters arranged based on your selected menu and event requirements.',
-    image: secondSectionBg,
+    image: customizedMenuImg,
     alt: 'Green Chillyz live food counters and culinary station presentation in Odisha',
   },
   {
@@ -41,7 +44,7 @@ const FACILITY_CARDS: FacilityCardItem[] = [
     title: 'Our On-Site Team',
     paragraph:
       'Attentive food serving staff and on-site event coordination to ensure welcoming hospitality and smooth service flow.',
-    image: heroBg,
+    image: cleanSetupImg,
     alt: 'Green Chillyz attentive serving staff and hospitality coordination',
   },
   {
@@ -49,8 +52,8 @@ const FACILITY_CARDS: FacilityCardItem[] = [
     title: 'Event Support',
     paragraph:
       'End-to-end event setup, decorative food presentation, and thorough post-event cleanup arranged with care.',
-    image: secondSectionBg,
-    alt: 'Green Chillyz event setup, culinary decoration, and post-event cleanup',
+    image: acrossBhubaneswarImg,
+    alt: 'Green Chillyz event setup, culinary decoration, and post-event cleanup in Bhubaneswar',
   },
 ];
 
@@ -60,16 +63,11 @@ export default function FacilitiesSection() {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
-  const [isReducedMotion, setIsReducedMotion] = useState(false);
+  const isReducedMotion = usePrefersReducedMotion();
 
   // Initialize and handle scroll-driven horizontal card movement
   useEffect(() => {
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    setIsReducedMotion(prefersReducedMotion);
-    if (prefersReducedMotion) return;
+    if (isReducedMotion) return;
 
     const section = sectionRef.current;
     const track = trackRef.current;
@@ -141,7 +139,7 @@ export default function FacilitiesSection() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [isReducedMotion]);
 
   return (
     <section
@@ -173,7 +171,8 @@ export default function FacilitiesSection() {
           </span>
           <h2
             id="facilities-heading"
-            className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] text-chef-black uppercase tracking-tight leading-[1.02]"
+            className="font-display text-chef-black uppercase tracking-tight leading-[1.02]"
+            style={{ fontSize: 'clamp(1.5rem, 3vw + 0.5rem, 2.75rem)' }}
           >
             We Take Care of Every Detail.
           </h2>
@@ -193,10 +192,10 @@ export default function FacilitiesSection() {
         >
           <div
             ref={trackRef}
-            className={`flex items-center gap-5 sm:gap-7 lg:gap-9 px-4 sm:px-8 lg:px-12 ${
+            className={`flex items-center px-4 sm:px-8 lg:px-12 ${
               isReducedMotion ? 'w-max' : 'will-change-transform'
             }`}
-            style={isReducedMotion ? undefined : { transform: 'translate3d(0, 0, 0)' }}
+            style={isReducedMotion ? { gap: 'clamp(1.25rem, 2vw, 2.25rem)' } : { transform: 'translate3d(0, 0, 0)', gap: 'clamp(1.25rem, 2vw, 2.25rem)' }}
           >
             {FACILITY_CARDS.map((card) => {
               const isCardActive = activeCardId === card.id;
@@ -215,15 +214,15 @@ export default function FacilitiesSection() {
                       setActiveCardId((prev) => (prev === card.id ? null : card.id));
                     }
                   }}
-                  style={{ containerType: 'size' }}
-                  className="group relative shrink-0 w-[85vw] sm:w-[480px] md:w-[540px] lg:w-[600px] xl:w-[650px] h-[340px] sm:h-[390px] md:h-[420px] lg:h-[450px] xl:h-[470px] rounded-2xl lg:rounded-3xl overflow-hidden shadow-md bg-sand-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-brand-yellow focus-visible:outline-offset-2 transition-shadow duration-300"
+                  style={{ containerType: 'size', width: 'clamp(272px, 85vw, 650px)', height: 'clamp(340px, 45vw, 470px)' }}
+                  className="group relative shrink-0 rounded-2xl lg:rounded-3xl overflow-hidden shadow-md bg-sand-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-brand-yellow focus-visible:outline-offset-2 transition-shadow duration-300"
                 >
                   {/* Background Catering Photography at full visual clarity */}
                   <Image
                     src={card.image}
                     alt={card.alt}
                     fill
-                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 540px, 650px"
+                    sizes="(max-width: 640px) 85vw, (max-width: 1280px) 45vw, 650px"
                     className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 ease-out"
                   />
 
@@ -300,7 +299,7 @@ export default function FacilitiesSection() {
             />
           </div>
 
-          <span className="text-[10px] sm:text-[11px] tracking-wider uppercase font-semibold text-chef-black/80 text-right">
+          <span className="hidden sm:inline text-[10px] sm:text-[11px] tracking-wider uppercase font-semibold text-chef-black/80 text-right">
             Scroll to explore facilities &rarr;
           </span>
         </div>

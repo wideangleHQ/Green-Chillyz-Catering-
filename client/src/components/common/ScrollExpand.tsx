@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
-import type { StaticImageData } from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import './ScrollExpand.css';
 
 const clamp = (v: number, a: number, b: number): number => (v < a ? a : v > b ? b : v);
@@ -81,19 +81,21 @@ export default function ScrollExpand({
     enabled,
   });
 
-  propsRef.current = {
-    startWidth,
-    startHeight,
-    startRadius,
-    endRadius,
-    mediaZoom,
-    scrollDistance,
-    holdDistance,
-    smoothing,
-    overlayScrim,
-    useWindowScroll,
-    enabled,
-  };
+  useEffect(() => {
+    propsRef.current = {
+      startWidth,
+      startHeight,
+      startRadius,
+      endRadius,
+      mediaZoom,
+      scrollDistance,
+      holdDistance,
+      smoothing,
+      overlayScrim,
+      useWindowScroll,
+      enabled,
+    };
+  });
 
   const dimsRef = useRef({
     startWidth,
@@ -158,33 +160,54 @@ export default function ScrollExpand({
     let target = 0;
     let stageH = 0;
     let running = false;
+    let lastVw = typeof window !== 'undefined' ? window.innerWidth : 0;
+    let lastVh = typeof window !== 'undefined' ? window.innerHeight : 0;
 
-    const measure = () => {
+    const measure = (force = false) => {
       const c = propsRef.current;
       const vw = window.innerWidth;
+      const vh = window.innerHeight;
       const isMobile = vw < 640;
       const isTablet = vw >= 640 && vw < 1024;
 
       dimsRef.current = {
-        startWidth: isMobile ? Math.max(48, c.startWidth) : isTablet ? Math.max(38, c.startWidth) : c.startWidth,
-        startHeight: isMobile ? Math.max(45, c.startHeight) : isTablet ? Math.max(35, c.startHeight) : c.startHeight,
-        startRadius: isMobile ? Math.min(18, c.startRadius) : c.startRadius,
+        startWidth: isMobile ? Math.max(50, c.startWidth) : isTablet ? Math.max(38, c.startWidth) : c.startWidth,
+        startHeight: isMobile ? Math.max(44, c.startHeight) : isTablet ? Math.max(36, c.startHeight) : c.startHeight,
+        startRadius: isMobile ? Math.min(16, c.startRadius) : isTablet ? Math.min(20, c.startRadius) : c.startRadius,
         endRadius: c.endRadius,
       };
 
-      stageH = c.useWindowScroll ? window.innerHeight : root.clientHeight;
+      // Check if this is an address bar resize on mobile (width unchanged and small height delta)
+      const isAddressBarResize = !force && Math.abs(vw - lastVw) === 0 && Math.abs(vh - lastVh) < 120;
+      if (stageH > 0 && isAddressBarResize) {
+        return;
+      }
+
+      lastVw = vw;
+      lastVh = vh;
+
+      stageH = c.useWindowScroll ? vh : root.clientHeight;
       if (stageH <= 0) return;
+
+      const scrollDistanceFactor = isMobile ? Math.min(0.9, c.scrollDistance) : isTablet ? Math.min(1.1, c.scrollDistance) : c.scrollDistance;
+      const holdDistanceFactor = isMobile ? Math.min(0.1, c.holdDistance) : isTablet ? Math.min(0.12, c.holdDistance) : c.holdDistance;
+
       stage.style.height = `${stageH}px`;
-      track.style.height = `${stageH * (1 + Math.max(0, c.scrollDistance) + Math.max(0, c.holdDistance))}px`;
+      track.style.height = `${stageH * (1 + Math.max(0, scrollDistanceFactor) + Math.max(0, holdDistanceFactor))}px`;
 
       const w = root.clientWidth || stageH;
-      stage.style.setProperty('--se-title-size', `${clamp(w * 0.065, 24, 72)}px`);
+      stage.style.setProperty('--se-title-size', `${clamp(w * 0.065, 22, 72)}px`);
     };
 
     const readProgress = () => {
       const c = propsRef.current;
       if (!c.enabled || reduceMotion) return 1;
-      const span = stageH * Math.max(0.01, c.scrollDistance);
+      const vw = typeof window !== 'undefined' ? window.innerWidth : 1200;
+      const isMobile = vw < 640;
+      const isTablet = vw >= 640 && vw < 1024;
+      const scrollDistanceFactor = isMobile ? Math.min(0.9, c.scrollDistance) : isTablet ? Math.min(1.1, c.scrollDistance) : c.scrollDistance;
+
+      const span = stageH * Math.max(0.01, scrollDistanceFactor);
       if (c.useWindowScroll) {
         const top = track.getBoundingClientRect().top;
         return clamp(-top / span, 0, 1);
@@ -221,13 +244,20 @@ export default function ScrollExpand({
     };
 
     const onResize = () => {
-      measure();
+      measure(false);
       target = readProgress();
       current = target;
       applyProgress(current);
     };
 
-    measure();
+    const onOrientationChange = () => {
+      measure(true);
+      target = readProgress();
+      current = target;
+      applyProgress(current);
+    };
+
+    measure(true);
     target = readProgress();
     current = target;
     applyProgress(current);
@@ -235,13 +265,15 @@ export default function ScrollExpand({
     const scroller = useWindowScroll ? window : root;
     scroller.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(onResize) : null;
+    window.addEventListener('orientationchange', onOrientationChange);
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => measure(false)) : null;
     if (ro) ro.observe(root);
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
       scroller.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onOrientationChange);
       if (ro) ro.disconnect();
     };
   }, [applyProgress, useWindowScroll]);
@@ -260,7 +292,19 @@ export default function ScrollExpand({
         loop
         playsInline
       />
+    ) : typeof src === 'object' && src !== null ? (
+      // Static imports go through next/image so the multi-MB source PNG is resized/compressed.
+      <Image
+        ref={mediaRef}
+        className="scroll-expand__media"
+        src={src}
+        alt={alt}
+        fill
+        sizes="100vw"
+        draggable={false}
+      />
     ) : (
+      // eslint-disable-next-line @next/next/no-img-element -- plain URL string, no static metadata to optimise
       <img
         ref={mediaRef}
         className="scroll-expand__media"

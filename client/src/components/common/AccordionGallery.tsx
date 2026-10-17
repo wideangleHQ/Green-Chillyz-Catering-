@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, type CSSProperties } from 'react';
-import type { StaticImageData } from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import './AccordionGallery.css';
 
 export interface AccordionGalleryItem {
@@ -54,8 +54,12 @@ export default function AccordionGallery({
   const [activeIndex, setActiveIndex] = useState<number>(defaultIndex);
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  const handleInteraction = (index: number) => {
-    setActiveIndex(index);
+  const handleInteraction = (index: number, isDirectTap = false) => {
+    if (isDirectTap && activeIndex === index) {
+      setActiveIndex(-1);
+    } else {
+      setActiveIndex(index);
+    }
   };
 
   const handleMouseLeave = () => {
@@ -123,9 +127,9 @@ export default function AccordionGallery({
               className={`accordion-gallery__item ${
                 isActive ? 'accordion-gallery__item--active' : ''
               } ${grayscale ? 'accordion-gallery__item--grayscale' : ''}`}
-              onClick={() => handleInteraction(index)}
-              onMouseEnter={trigger === 'hover' ? () => handleInteraction(index) : undefined}
-              onFocus={() => handleInteraction(index)}
+              onClick={() => handleInteraction(index, true)}
+              onMouseEnter={trigger === 'hover' ? () => handleInteraction(index, false) : undefined}
+              onFocus={() => handleInteraction(index, false)}
               tabIndex={0}
               role="button"
               aria-expanded={isActive}
@@ -133,13 +137,23 @@ export default function AccordionGallery({
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  handleInteraction(index);
+                  handleInteraction(index, true);
                 }
               }}
             >
               {/* Background Image Container */}
               <div className="accordion-gallery__image-wrap">
-                {resolvedSrc ? (
+                {typeof item.image === 'object' && item.image !== null ? (
+                  <Image
+                    src={item.image}
+                    alt={item.label}
+                    className="accordion-gallery__image"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 60vw"
+                    draggable={false}
+                  />
+                ) : resolvedSrc ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- plain URL string
                   <img
                     src={resolvedSrc}
                     alt={item.label}
@@ -153,9 +167,11 @@ export default function AccordionGallery({
               {/* Main Content Area */}
               <div className={`accordion-gallery__content ${isActive ? 'accordion-gallery__content--active' : ''}`}>
                 {/* Inactive / Thumbnail State: Heading Only */}
-                <div className="accordion-gallery__collapsed-content" aria-hidden={isActive}>
-                  <h3 className="accordion-gallery__collapsed-title">{item.label}</h3>
-                </div>
+                {showLabels ? (
+                  <div className="accordion-gallery__collapsed-content" aria-hidden={isActive}>
+                    <h3 className="accordion-gallery__collapsed-title">{item.label}</h3>
+                  </div>
+                ) : null}
 
                 {/* Active / Hover State: Full Text */}
                 <div className="accordion-gallery__expanded-content" aria-hidden={!isActive}>

@@ -116,7 +116,7 @@ export const FAQS: Faq[] = [
     category: 'booking',
     question: 'How do I request a quotation?',
     answer:
-      'Submit the enquiry form with your event type, date, guest count and location, or reach us on WhatsApp or phone. We need the detail information about your event before a quotation can be prepared.',
+      'Reach us directly on WhatsApp or phone with your event type, date, guest count and location. We need the detail information about your event before a quotation can be prepared.',
   },
   {
     category: 'booking',

@@ -21,7 +21,7 @@ export default function FaqSection() {
   const faqs = FAQS.slice(0, 5);
 
   return (
-    <section className="section-spacing major-section bg-white">
+    <section className="section-spacing bg-white">
       <div className="page-container">
         <SectionHeading
           eyebrow="FAQ"
